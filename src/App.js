@@ -4,66 +4,47 @@ import React, { useState } from "react";
 import { act } from "react-dom/test-utils";
 import Quote from "./Quote";
 import { randomColor } from "./randomColor";
-
-const quotes = [
-  {
-    quote:
-      "You have to write the book that wants to be written. And if the book will be too difficult for grown-ups, then you write it for children.",
-    author: "Madeleine L'Engle",
-  },
-  {
-    quote:
-      "If you don't have time to read, you don't have the time (or the tools) to write. Simple as that.",
-    author: "Stephen King",
-  },
-  {
-    quote: "We write to taste life twice, in the moment and in retrospect.",
-    author: "Anaïs Nin",
-  },
-  {
-    quote:
-      "Substitute 'damn' every time you're inclined to write 'very;' your editor will delete it and the writing will be just as it should be.",
-    author: "Mark Twain",
-  },
-  {
-    quote:
-      "If there's a book that you want to read, but it hasn't been written yet, then you must write it.",
-    author: "Toni Morrison",
-  },
-];
+import { getRandomQuote } from "./getRandomQuote";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    let actualQuote = quotes.at(Math.floor(Math.random() * quotes.length));
+
     let color = randomColor();
-    document.body.style.backgroundColor = color;
+
     this.state = {
-      quote: actualQuote.quote,
-      author: actualQuote.author,
-      index: Math.floor(Math.random() * quotes.length - 1),
+      quote: "",
+      author: "",
       color: color,
     };
     this.nextQuote = this.nextQuote.bind(this);
+    document.body.style.backgroundColor = color;
   }
 
-  nextQuote() {
-    let avaibleQuotes = quotes
-      .slice(0, this.state.index)
-      .concat(quotes.slice(this.state.index + 1));
-    let randomIndex = Math.floor(Math.random() * avaibleQuotes.length - 1);
-    let actualQuote = avaibleQuotes.at(randomIndex);
+  componentDidMount() {
+    this.nextQuote();
+  }
+
+  async nextQuote() {
     let color = randomColor();
-    document.body.style.backgroundColor = color;
+
+    let text, author;
+    await fetch("http://api.quotable.io/random")
+      .then((res) => res.json())
+      .then((quote) => {
+        text = quote.content;
+        author = quote.author;
+        console.log(quote);
+      });
 
     this.setState(() => {
       return {
-        quote: actualQuote.quote,
-        author: actualQuote.author,
-        index: quotes.indexOf(actualQuote),
+        quote: text,
+        author: author,
         color: color,
       };
     });
+    document.body.style.backgroundColor = color;
   }
 
   render() {
