@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import React, { useState } from "react";
 import { act } from "react-dom/test-utils";
 import Quote from "./Quote";
@@ -69,8 +71,21 @@ class App extends React.Component {
       <div id="quote-box" style={{ color: this.state.color }}>
         <Quote quote={this.state.quote} author={this.state.author} />
         <div className="space-between">
-          <a href="twitter.com/intent/tweet" id="tweet-quote" target="_top">
-            Tweet
+          <a
+            href={
+              "https://twitter.com/intent/tweet?text=" +
+              this.state.quote +
+              " " +
+              this.state.author
+            }
+            id="tweet-quote"
+            target="_blank"
+          >
+            <FontAwesomeIcon
+              icon={faTwitter}
+              className="icon-twitter"
+              style={{ color: this.state.color }}
+            />
           </a>
           <button
             onClick={this.nextQuote}
