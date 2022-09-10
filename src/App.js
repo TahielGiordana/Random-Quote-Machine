@@ -29,7 +29,7 @@ class App extends React.Component {
     let color = randomColor();
 
     let text, author;
-    await fetch("http://api.quotable.io/random")
+    await fetch("https://api.quotable.io/random")
       .then((res) => res.json())
       .then((quote) => {
         text = quote.content;
