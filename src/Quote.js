@@ -7,9 +7,9 @@ class Quote extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="space-between flex-column quote-text-wrapper">
         <p id="text">{this.props.quote}</p>
-        <p id="author">-{this.props.author}</p>
+        <p id="author">- {this.props.author}</p>
       </div>
     );
   }
